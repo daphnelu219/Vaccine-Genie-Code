@@ -1,15 +1,11 @@
 from google import genai
 from google.genai import types
 import json
-from langchain_community.document_loaders import WebBaseLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain_chroma import Chroma
 from dotenv import load_dotenv
 import os
-
 import pathlib
 
+load_dotenv()
 pdf_bytes = pathlib.Path("data/immprintmanualcoi.pdf").read_bytes()
 pdf_file1 = types.Part.from_bytes(
     mime_type= "application/pdf",

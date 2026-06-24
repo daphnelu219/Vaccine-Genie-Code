@@ -63,7 +63,7 @@
     "manufacturer": "Unknown",
     "lot_number": "Unknown",
     "provider": "Anthony Somkin, M.D.",
-    "clinic": "Anthony Somkin, M.D."
+    "clinic": "Unknown"
   },
   {
     "user_id": "user_001",
@@ -85,7 +85,7 @@
     "manufacturer": "Unknown",
     "lot_number": "Unknown",
     "provider": "Anthony Somkin, M.D.",
-    "clinic": "Anthony Somkin, M.D."
+    "clinic": "Unknown"
   },
   {
     "user_id": "user_001",
@@ -96,7 +96,7 @@
     "manufacturer": "Unknown",
     "lot_number": "Unknown",
     "provider": "Anthony Somkin, M.D.",
-    "clinic": "Anthony Somkin, M.D."
+    "clinic": "Unknown"
   },
   {
     "user_id": "user_001",
@@ -107,7 +107,7 @@
     "manufacturer": "Unknown",
     "lot_number": "Unknown",
     "provider": "Anthony Somkin, M.D.",
-    "clinic": "Anthony Somkin, M.D."
+    "clinic": "Unknown"
   },
   {
     "user_id": "user_001",
@@ -116,7 +116,7 @@
     "vaccine_name": "Yellow Fever",
     "dose_date": "2009-01-09",
     "manufacturer": "Sanofi Pasteur Inc.",
-    "lot_number": "UF428AA",
+    "lot_number": "UF 428AA",
     "provider": "Unknown",
     "clinic": "CPMC Travel Clinic"
   }

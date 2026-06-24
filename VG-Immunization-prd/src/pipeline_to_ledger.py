@@ -3,12 +3,15 @@ import pandas as pd
 from collections import defaultdict
 from google import genai
 from google.genai import types
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from dotenv import load_dotenv
 import os
+from huggingface_hub import login
 
+login(os.environ.get("HG_TOKEN"))
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 pd.set_option('display.max_colwidth', None)
@@ -33,39 +36,20 @@ def lookup_vaccine(vaccine_name):
 load_dotenv()
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"), http_options={"api_version": "v1"})
 
-# Step 1 — Load CDC page
 loader = WebBaseLoader("https://www.cdc.gov/vaccines/imz-schedules/adult-easyread.html")
 docs = loader.load()
 
-# Step 2 — Chunk it
+# Chunk it
 splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 chunks = splitter.split_documents(docs)
 
-# Step 3 — Embed and store
-class GeminiEmbeddings:
-    def embed_documents(self, texts):
-        result = client.models.embed_content(
-            model="text-embedding-004",
-            contents=texts
-        )
-        return [e.values for e in result.embeddings]
-    
-    def embed_query(self, text):
-        result = client.models.embed_content(
-            model="gemini-embedding-2",
-            contents=[text]
-        )
-        return result.embeddings[0].values
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
-embeddings = GeminiEmbeddings()
-
-# now use it with Chroma as before
 if not os.path.exists("data/cdc_vectorstore"):
     vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="data/cdc_vectorstore")
 else:
     vectorstore = Chroma(persist_directory="data/cdc_vectorstore", embedding_function=embeddings)
 
-# Step 4 — Query at runtime
 def check_compliance(patient_ledger):
     retriever = vectorstore.as_retriever(search_kwargs={"k": 5})
     relevant_docs = retriever.invoke(f"vaccine requirements compliance {patient_ledger}")

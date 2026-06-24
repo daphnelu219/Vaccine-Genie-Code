@@ -2,7 +2,7 @@
   {
     "user_id": "user_001",
     "patient_name": "Patrick Weber",
-    "generated_at": "2026-06-19T09:55:06.012868+00:00",
+    "generated_at": "2026-06-24T10:20:08.511257+00:00",
     "ledger": [
       {
         "disease_name": "Measles",
@@ -14,11 +14,9 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 2,
-        "completion_status": "Incomplete",
-        "missing_doses": [
-          "Dose 2"
-        ]
+        "doses_expected_count": null,
+        "completion_status": "Complete",
+        "missing_doses": []
       },
       {
         "disease_name": "Mumps",
@@ -30,11 +28,9 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 2,
-        "completion_status": "Incomplete",
-        "missing_doses": [
-          "Dose 2"
-        ]
+        "doses_expected_count": null,
+        "completion_status": "Complete",
+        "missing_doses": []
       },
       {
         "disease_name": "Rubella",
@@ -46,11 +42,9 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 2,
-        "completion_status": "Incomplete",
-        "missing_doses": [
-          "Dose 2"
-        ]
+        "doses_expected_count": null,
+        "completion_status": "Complete",
+        "missing_doses": []
       },
       {
         "disease_name": "Polio",
@@ -62,13 +56,9 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 4,
-        "completion_status": "Incomplete",
-        "missing_doses": [
-          "Dose 2",
-          "Dose 3",
-          "Dose 4"
-        ]
+        "doses_expected_count": null,
+        "completion_status": "Complete",
+        "missing_doses": []
       },
       {
         "disease_name": "Diphtheria",
@@ -80,13 +70,10 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 5,
+        "doses_expected_count": null,
         "completion_status": "Incomplete",
         "missing_doses": [
-          "Dose 2",
-          "Dose 3",
-          "Dose 4",
-          "Dose 5"
+          "Booster"
         ]
       },
       {
@@ -99,13 +86,10 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 5,
+        "doses_expected_count": null,
         "completion_status": "Incomplete",
         "missing_doses": [
-          "Dose 2",
-          "Dose 3",
-          "Dose 4",
-          "Dose 5"
+          "Booster"
         ]
       },
       {
@@ -118,13 +102,10 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 5,
+        "doses_expected_count": null,
         "completion_status": "Incomplete",
         "missing_doses": [
-          "Dose 2",
-          "Dose 3",
-          "Dose 4",
-          "Dose 5"
+          "Booster"
         ]
       },
       {
@@ -137,11 +118,9 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 2,
-        "completion_status": "Incomplete",
-        "missing_doses": [
-          "Dose 2"
-        ]
+        "doses_expected_count": null,
+        "completion_status": "Complete",
+        "missing_doses": []
       },
       {
         "disease_name": "Typhoid",
@@ -153,7 +132,7 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 1,
+        "doses_expected_count": null,
         "completion_status": "Complete",
         "missing_doses": []
       },
@@ -172,7 +151,7 @@
           }
         ],
         "doses_completed_count": 2,
-        "doses_expected_count": 2,
+        "doses_expected_count": null,
         "completion_status": "Complete",
         "missing_doses": []
       },
@@ -186,7 +165,7 @@
           }
         ],
         "doses_completed_count": 1,
-        "doses_expected_count": 1,
+        "doses_expected_count": null,
         "completion_status": "Complete",
         "missing_doses": []
       },
@@ -210,7 +189,7 @@
           }
         ],
         "doses_completed_count": 3,
-        "doses_expected_count": 3,
+        "doses_expected_count": null,
         "completion_status": "Complete",
         "missing_doses": []
       }
