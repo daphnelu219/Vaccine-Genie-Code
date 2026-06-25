@@ -1,3 +1,6 @@
 .env
 data/cdc_vectorstore/
 data/vaccine-genie-ml-ai-service-account.json
+__pycache__/
+*.py[cod]
+.DS_Store
