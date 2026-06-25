@@ -3,7 +3,7 @@ import pandas as pd
 from collections import defaultdict
 from google import genai
 from google.genai import types
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
@@ -44,6 +44,7 @@ splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 chunks = splitter.split_documents(docs)
 
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
 
 if not os.path.exists("data/cdc_vectorstore"):
     vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="data/cdc_vectorstore")
@@ -120,8 +121,8 @@ def build_ledger(df):
                 "disease_name": disease,
                 "doses_received": labeled_doses,
                 "doses_completed_count": len(labeled_doses),
-                "doses_expected_count": None,  # TODO: plug in requirements database
-                "completion_status": "Unknown",  # TODO: compute once expected count is known
+                "doses_expected_count": None,  
+                "completion_status": "Unknown",  
                 "missing_doses": []
             })
 
