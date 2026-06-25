@@ -4,19 +4,24 @@ import json
 from dotenv import load_dotenv
 import os
 import pathlib
+import pandas as pd
 
 load_dotenv()
-pdf_bytes = pathlib.Path("data/immprintmanualcoi.pdf").read_bytes()
-pdf_file1 = types.Part.from_bytes(
-    mime_type= "application/pdf",
-    data = pdf_bytes
-)
-
-image_bytes = pathlib.Path("data/3758110765_57001f4395_o.jpg").read_bytes()
-pdf_file2 = types.Part.from_bytes(
-    mime_type= "image/jpeg",
-    data= image_bytes
-)
+def load_file(path):
+    suffix = pathlib.Path(path).suffix.lower()
+    if suffix == ".csv":
+        return None
+    mime_types = {
+        ".pdf": "application/pdf",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".png": "image/png"
+    }
+    mime_type = mime_types.get(suffix, "application/pdf")
+    return types.Part.from_bytes(
+        mime_type=mime_type,
+        data=pathlib.Path(path).read_bytes()
+    )
 
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 
@@ -35,23 +40,51 @@ For each dose found in the table, return a nested JSON object with these fields:
 - clinic: use the Clinic or facility name if available, or else put "Unknown"
 
 Return ONLY a JSON array of these objects, no other text, no markdown formatting."""
+def clean_json(text):
+    text = text.strip()
+    if "```json" in text:
+        text = text.split("```json")[1].split("```")[0]
+    elif "```" in text:
+        text = text.split("```")[1].split("```")[0]
+    return text.strip()
 
-response = client.models.generate_content(model="gemini-3.5-flash", contents=[pdf_file2, prompt])
-# response = model.generate_content([pdf_file2, prompt])
+def extract_csv(path):
+    df = pd.read_csv(path)
+    
+    # process in chunks of 100 rows at a time
+    chunk_size = 100
+    all_records = []
+    
+    for i in range(0, len(df), chunk_size):
+        chunk = df.iloc[i:i+chunk_size]
+        csv_text = chunk.to_string(index=False)
+        
+        print(f"Processing rows {i} to {i+len(chunk)}...")
+        
+        response = client.models.generate_content(
+            model="gemini-3.5-flash",
+            contents=[f"{prompt}\n\nHere is the CSV data:\n{csv_text}"]
+        )
+        
+        try:
+            records = json.loads(clean_json(response.text))
+            all_records.extend(records)
+        except json.JSONDecodeError as e:
+            print(f"Failed to parse chunk {i}: {e}")
+            continue
+    
+    print(f"Extracted {len(all_records)} total records")
+    return all_records
 
-# Clean up response
-text = response.text.strip()
-if text.startswith("```"):
-    text = text.split("```")[1]
-    if text.startswith("json"):
-        text = text[4:]
+def extract_file(file_path):
+    file = load_file(file_path)
+    response = client.models.generate_content(model="gemini-3.5-flash", contents=[file, prompt])
 
-# Parse and pretty-print
-records = json.loads(text)
-print(json.dumps(records, indent=2))
+    records = json.loads(clean_json(response.text))
 
-# Save to file
-with open("data/extracted_records.json", "w") as f:
-    json.dump(records, f, indent=2)
+    with open("data/extracted_records.json", "w") as f:
+        json.dump(records, f, indent=2)
 
-print(f"\nExtracted {len(records)} records → saved to extracted_records.json")
+    print(f"\nExtracted {len(records)} records → saved to extracted_records.json")
+
+extract_file("data/immprintmanualcoi.pdf")
