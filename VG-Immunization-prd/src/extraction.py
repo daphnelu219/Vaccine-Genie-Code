@@ -50,31 +50,24 @@ def clean_json(text):
 
 def extract_csv(path):
     df = pd.read_csv(path)
+    records = []
+    for _, row in df.iterrows():
+        record = {
+            "user_id": row['PATIENT'],
+            "patient_name": None,
+            "vaccine_name": row['DESCRIPTION'].strip() if pd.notna(row['DESCRIPTION']) else None,
+            "dose_date": row['DATE'],
+            "manufacturer": None,
+            "lot_number": None,
+            "provider": None,
+            "clinic": None
+        }
+        records.append(record)
     
-    # process in chunks of 100 rows at a time
-    chunk_size = 100
-    all_records = []
+    with open("data/extracted_records.json", "w") as f:
+        json.dump(records, f, indent=2)
     
-    for i in range(0, len(df), chunk_size):
-        chunk = df.iloc[i:i+chunk_size]
-        csv_text = chunk.to_string(index=False)
-        
-        print(f"Processing rows {i} to {i+len(chunk)}...")
-        
-        response = client.models.generate_content(
-            model="gemini-3.5-flash",
-            contents=[f"{prompt}\n\nHere is the CSV data:\n{csv_text}"]
-        )
-        
-        try:
-            records = json.loads(clean_json(response.text))
-            all_records.extend(records)
-        except json.JSONDecodeError as e:
-            print(f"Failed to parse chunk {i}: {e}")
-            continue
-    
-    print(f"Extracted {len(all_records)} total records")
-    return all_records
+    print(f"\nExtracted {len(records)} records → saved to extracted_records.json")
 
 def extract_file(file_path):
     file = load_file(file_path)
@@ -87,4 +80,5 @@ def extract_file(file_path):
 
     print(f"\nExtracted {len(records)} records → saved to extracted_records.json")
 
-extract_file("data/immprintmanualcoi.pdf")
+extract_csv("data/immunizations.csv")
+# extract_file("data/immprintmanualcoi.pdf")

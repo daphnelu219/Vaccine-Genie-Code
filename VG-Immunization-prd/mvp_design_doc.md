@@ -37,7 +37,8 @@ Each record represents one administered vaccine dose.
 ### Example Record
 ```json
 {
-  "record_id": "rec_001",
+  "user_id":"user_001",
+  "patient_name": "Daphne Amazing",
   "vaccine_name": "DTaP-Hib-IPV",
   "dose_date": "2018-02-28",
   "manufacturer": "Sanofi",
